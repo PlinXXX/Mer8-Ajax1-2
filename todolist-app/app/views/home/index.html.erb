@@ -1,0 +1,43 @@
+<h1 class="text-center mb-4">Welcome to my todolist app</h1>
+<%= render 'layouts/task_form'  %>
+<div class="container">
+  <ul>
+  <% @categories.each do  |category|%>
+  <li class="title" style="display: inline-block; border: 1px solid #b2bec3; padding: 2px; background-color: #dfe6e9; border-color: #2d3436; border-radius: 5px 5px;"> <%= category.title  %> </li>
+  <% end %>
+
+  <% @categories.each do  |category|%>
+
+  <div class="card" style="display: none;">
+    <ul>
+      <% category.tasks.each do |task|  %>
+      <li>
+        <%= task.title  %><%= link_to "Hide", "", class: 'hide', data: {'js-hide-link' => true} %>
+        <% unless task.deadline.nil? %>
+          , to read: <%= task.deadline.strftime('%D')  %>
+        <% end %>
+        <%= link_to "Edit this task", edit_task_path(task) %>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+  </ul>
+</div>
+
+<div class="container">
+  <div>
+    <% @tasks.each do |task|  %>
+      <div class="card col-3" style="margin: 0px auto; text-align: center;">
+        <% unless task.image.nil? %>
+          <%= image_tag task.image, class: "rounded-circle" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+    
+<button id="previousButton" style="float: left;">Previous</button>
+<button id="nextButton" style="float: right;">Next</button>
+
+<br><br><br>
