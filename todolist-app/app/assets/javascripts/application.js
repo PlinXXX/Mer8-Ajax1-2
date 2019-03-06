@@ -29,35 +29,25 @@ $(document).ready(function() {
 		$list = $('.title');
 		$taskList = $('.container .card');
 
-			$list.eq(0).on('click', () => {
-				$list.eq(0).css('background-color', '#b2bec3');
-				$list.eq(1).css('background-color', '#dfe6e9');
-				$list.eq(2).css('background-color', '#dfe6e9');
+		console.log($list);
+		console.log($list.length);
+		// console.log($taskList);
+		for (let i = $list.length - 1; i >= 0; i--) {		
+			$list.eq(i).on("click", () => {
+				console.log($list[i] + " => " + i);
+				
+				$list.eq(i).css('background-color', '#b2bec3');
+				for (var other = $list.length - 1; other >= 0; other--) {
+					if (other == i) {continue;}
+					$list.eq(i).css('background-color', '#dfe6e9');
+				}
 
-				$taskList.eq(0).toggle('collapse');
-				$taskList.eq(1).hide();
-				$taskList.eq(2).hide();
+				$taskList.eq(i).toggle('collapse');
+				for (other = $list.length - 1; other >= 0; other--) {
+					$taskList.eq(other).hide();
+				}
 			});
-
-			$list.eq(1).on('click', () => {
-				$list.eq(1).css('background-color', '#b2bec3');
-				$list.eq(2).css('background-color', '#dfe6e9');
-				$list.eq(0).css('background-color', '#dfe6e9');
-
-				$taskList.eq(1).toggle('collapse');
-				$taskList.eq(2).hide();
-				$taskList.eq(0).hide();
-			});			
-
-			$list.eq(2).on('click', () => {
-				$list.eq(2).css('background-color', '#b2bec3');
-				$list.eq(0).css('background-color', '#dfe6e9');
-				$list.eq(1).css('background-color', '#dfe6e9');
-
-				$taskList.eq(2).toggle('collapse');
-				$taskList.eq(0).hide();
-				$taskList.eq(1).hide();
-			});
+		}
 	}		
 	Tabulation();
 // 2.2 Le minimum vital du JavaScript de front
@@ -148,5 +138,52 @@ $(document).ready(function() {
 	// autoNext();
 
 	// console.log($(''));
+	function eventFire(el, etype){ // Event Creator
+	  if (el.fireEvent) {
+	    el.fireEvent('on' + etype);
+	  } else {
+	    let evObj = document.createEvent('Events');
+	    evObj.initEvent(etype, true, false);
+	    el.dispatchEvent(evObj);
+	  }
+	}
+	// eventFire(document.querySelectorAll('.title')[0], 'click');
+
+	function createTask() {
+		console.log(document.querySelectorAll('.row.ml-3')[0]);
+	}
+	createTask();
+
+	function updateTask() {
+		$forms = $('.form');
+		console.log($forms);
+
+		let updateButton = document.querySelectorAll('.updateButton');
+		console.log(updateButton);
+
+		$checkbox = $('.checkbox');
+		console.log($checkbox);
+
+		for (var i = 0; i < $checkbox.length; i++) {
+			console.log(updateButton[i]);
+
+			let status = $(`.checkbox`).eq(i);
+			console.log(status);
+
+			status.attr('type', 'checkbox');
+
+			status.on('click', () => {
+				alert('Task Done');
+				status.attr('value', 'true');
+				eventFire(updateButton[0], 'click');
+			});
+
+			updateButton[0].click( function(){
+				alert('firstButton Selected');
+			});
+
+		}
+	}
+	updateTask();
 
 });	

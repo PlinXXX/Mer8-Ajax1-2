@@ -1,7 +1,38 @@
-<% if user_signed_in? %>
-
-  <%= render 'task_list'  %>
-
-<% end %>
-
 <%= link_to "Create a new task", new_task_path, class: "btn btn-info"  %>
+
+<div class="container" style="display: block;">
+	<% @categories.each do |category| %>
+		<h1><%= category.title %></h1>
+		<% category.tasks.where(status: false).each do |task| %>
+			<% if user_signed_in? && category.tasks.length != 0 %>
+					
+				<%= render 'task', task: task  %>
+
+			<% end %>
+
+				<div class="collapse form">
+				<%= form_tag(task_path(task.id), method: "put", remote: true) do %>
+				  <div class="form-group">
+				      <%= label_tag("Your task:") %>
+				      <%= text_field_tag(:title, task.title) %>
+				  </div>
+				</div>
+
+				  <div class="form-group">
+				  	<strong>Check only if the task is finished</strong> <%= hidden_field_tag :status, task.status%>
+				  	<%= hidden_field_tag :status, task.status, :id => "status#{task.id}", class: "checkbox", :data => { confirm: "Sure ?"} %>
+				  </div>
+
+				<div class="collapse">
+				  <div class="form-group">
+				    <%= label_tag("When is it due for ?") %>
+				    <%= date_field_tag(:deadline, task.deadline)  %>
+				  </div>
+				  	<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+				    <%= submit_tag("Update", class: "updateButton") %>
+				<% end %>
+				</div>
+
+		<% end %>
+	<% end %>
+</div>

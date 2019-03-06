@@ -1,5 +1,10 @@
 <li>
-  <%= task.title %>,
-  "Deadline : " <%=  task.deadline.strftime("%D")  %>
+  <h4 class="tasktitle"><%= task.title %></h4>
+  <% if task.deadline %>
+  	
+  ,"Deadline : " <%=  task.deadline.strftime("%D")  %><br>
+  
+  <% end %>
+  
   <%= link_to "Edit this task", edit_task_path(task) %>
 </li>

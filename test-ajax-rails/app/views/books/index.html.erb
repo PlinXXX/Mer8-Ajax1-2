@@ -1,0 +1,16 @@
+<div id="book">
+  <ul>
+    <% @books.each do |book| %>
+      <li><%= book.title %> by <%= book.author  %></li>
+    <% end %>
+  </ul>
+<div>
+
+<%= form_tag(books_path, method: :post, class: "form", remote: true) do %>
+  Title
+   <%= text_field_tag  :title %>
+   author
+   <%= text_field_tag  :author %>
+  <%= submit_tag 'save', :name => 'commit'%>
+  <% end %>
+

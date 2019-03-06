@@ -1,16 +1,17 @@
 <h1 class="text-center mb-4">Welcome to my todolist app</h1>
-<%= render 'layouts/task_form'  %>
+<%= render 'tasks/task_form'  %>
 <div class="container">
   <ul>
   <% @categories.each do  |category|%>
   <li class="title" style="display: inline-block; border: 1px solid #b2bec3; padding: 2px; background-color: #dfe6e9; border-color: #2d3436; border-radius: 5px 5px;"> <%= category.title  %> </li>
   <% end %>
+  </ul>
 
   <% @categories.each do  |category|%>
 
-  <div class="card" style="display: none;">
+  <div class="card" style="display: none; height: auto;">
     <ul>
-      <% category.tasks.each do |task|  %>
+      <% category.tasks.where(status: false).each do |task|  %>
       <li>
         <%= task.title  %><%= link_to "Hide", "", class: 'hide', data: {'js-hide-link' => true} %>
         <% unless task.deadline.nil? %>
@@ -22,9 +23,8 @@
     </ul>
   </div>
   <% end %>
-  </ul>
 </div>
-
+<br><br><br>
 <div class="container">
   <div>
     <% @tasks.each do |task|  %>

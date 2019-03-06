@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+  include TasksHelper
 before_action :authenticate_user!
   def new
     @categories = Category.all
@@ -19,19 +20,19 @@ before_action :authenticate_user!
 
   def edit
     @task = Task.find(params[:id])
+    @status = status
     @categories = Category.all
-
   end
 
   def update
     @task = Task.find(params[:id])
     @task.update(task_params)
-    redirect_to root_path
+    redirect_to tasks_path
     flash[:notice] = "Task edited"
   end
 
   def index
-    @tasks = Task.all
+    @categories = Category.all
   end
 
   def destroy
@@ -44,7 +45,7 @@ before_action :authenticate_user!
   private
 
   def task_params
-    params.permit(:title, :deadline, :description)
+    params.permit(:title, :deadline, :description, :status)
   end
 
   def category_params
